@@ -1,5 +1,5 @@
--- MetaL, Meta Lua: a thin lispy meta programming layer on top of Lua,
--- inspired by Parenscript.
+-- S-Lua, S-expressions and Macros for Lua: a thin lispy meta programming
+-- layer on top of Lua.
 
 -- S-expression parser from https://github.com/zick/LuaLisp with slight
 -- modifications.  Thanks zick!
@@ -365,6 +365,6 @@ function loadFile (filename)
    assert(loadstring(compileFile(filename), filename))()
 end
 
-function metal (str)
+function sLua (str)
    assert(loadstring(compile(read(str)), str))()
 end
