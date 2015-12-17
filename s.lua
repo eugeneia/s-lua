@@ -38,29 +38,6 @@ function toNum(c)
    return string.byte(c, 1, 1) - string.byte('0', 1, 1)
 end
 
-function makeNumOrSym(str)
-   local i = 1
-   local sign = 1
-   if string.sub(str, 1, 1) == '-' then
-      sign = -1
-      i = 2
-   end
-   local is_num = false
-   local num = 0
-   for j = i, string.len(str) do
-      c = string.sub(str, j, j)
-      if isNumChar(c) then
-         num = num * 10 + toNum(c)
-         is_num = true
-      else
-         is_num = false
-         break
-      end
-   end
-   if is_num then return num * sign
-   else return str end
-end
-
 function readAtom(str)
    local next = ''
    for i = 1, string.len(str) do
@@ -70,7 +47,7 @@ function readAtom(str)
          break
       end
    end
-   return makeNumOrSym(str), next
+   return tonumber(str) or str, next
 end
 
 local readList = nil
