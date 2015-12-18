@@ -267,12 +267,11 @@ for _, infix in ipairs({"and", "or",
 end
 
 -- (for ...)
-builtin["for"] = function (i, ...)
+builtin["for"] = function (n, i, ...)
    return (
-      "for %s, %s in %s do %s end"
-          ):format(compile(i[1]),
-                   compile(i[2]),
-                   compile(i[3]),
+      "for %s in %s do %s end"
+          ):format(compileList(", ", compile, n),
+                   compile(i),
                    compileList("; ", compile, {...}))
 end
 

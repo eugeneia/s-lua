@@ -1,5 +1,5 @@
 (defmacro let (bindings ...)
   (local (vars vals) (vector) (vector))
-  (for (_ b (ipairs bindings))
+  (for (_ b) (ipairs bindings)
     (= (vars[#vars+1] vals[#vals+1]) b[1] b[2]))
   (return `(do (local ,vars ,@vals) ,...)))
