@@ -344,3 +344,59 @@ end
 function sLua (str)
    assert(loadstring(compile(read(str)), str))()
 end
+
+
+-- prin1 because its useful
+function prin1 (value, stream)
+   local stream = stream or io.stdout
+   local indent = 0
+   local function print_indent (stream)
+      for i = 1, indent do stream:write(" ") end
+   end
+   local function print_value (value, stream)
+      local  type = type(value)
+      if     type == 'table'  then
+         indent = indent + 2
+         stream:write("{\n")
+         if #value == 0 then
+            for key, value in pairs(value) do
+               print_indent(stream)
+               stream:write(key, " = ")
+               print_value(value, stream)
+               stream:write(",\n")
+            end
+         else
+            for _, value in ipairs(value) do
+               print_indent(stream)
+               print_value(value, stream)
+               stream:write(",\n")
+            end
+         end
+         indent = indent - 2
+         print_indent(stream)
+         stream:write("}")
+      elseif type == 'string' then
+         stream:write(("%q"):format(value))
+      else
+         stream:write(("%s"):format(value))
+      end
+   end
+   print_value(value, stream)
+   stream:write("\n")
+end
+
+
+-- princ for UX.
+function princ (v, nl)
+   if type(v) == "table" then
+      io.write("(")
+      for i, x in ipairs(v) do
+         princ(x, nl or true)
+         if i ~= #v then io.write(" ") end
+      end
+      io.write(")")
+   else
+      io.write(("%s"):format(v))
+   end
+   if not nl then io.write("\n") end
+end
