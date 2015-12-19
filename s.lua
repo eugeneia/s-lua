@@ -50,6 +50,22 @@ function readAtom(str)
    return tonumber(str) or str, next
 end
 
+function readQuotedString (str)
+   local i, e
+   for i = 2, #str do
+      if string.sub(str, i, i) == '"' and
+         string.sub(str, i-1, i-1) ~= '\\' then
+         e = i
+         break
+      end
+   end
+   assert(e, "Unexpected EOF")
+   local s = string.sub(str, 1, e)
+   return {'quote', assert(loadstring("return "..s),
+                           ("Malformed string: %q"):format(s))()},
+                 string.sub(str, e+1)
+end
+
 local readList = nil
 
 function read1(str)
@@ -58,6 +74,7 @@ function read1(str)
    c = string.sub(str, 1, 1)
    if c == kRPar then return error(("invalid syntax: %s"):format(str))
    elseif c == kLPar then return readList(string.sub(str, 2))
+   elseif c == kQuote then return readQuotedString(str)
    else return readAtom(str) end
 end
 
