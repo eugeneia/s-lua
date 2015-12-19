@@ -244,10 +244,10 @@ end
 -- (if c t e)
 builtin["if"] = function (c, t, e)
    if e then return (
-         "if %s then return %s else return %s end"
+         "if %s then %s else %s end"
                     ):format(compile(c), compile(t), compile(e))
    else return (
-         "if %s then return %s end"
+         "if %s then %s end"
                ):format(compile(c), compile(t))
    end
 end
